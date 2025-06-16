@@ -114,12 +114,15 @@
       }, 100);
     }
 
+let lastShownTime = 0;
+
 function checkLyrics() {
-  const currentTime = audio.currentTime + 0.05; // majuin 0.4 detik
+  const currentTime = audio.currentTime;
   for (let i = lyrics.length - 1; i >= 0; i--) {
-    if (currentTime >= lyrics[i].time) {
+    if (currentTime >= lyrics[i].time && currentTime - lastShownTime >= 1.5) { // tahan 1.5 detik
       if (currentIndex !== i) {
         currentIndex = i;
+        lastShownTime = currentTime;
         showLyric(lyrics[i], i);
       }
       break;
@@ -128,9 +131,7 @@ function checkLyrics() {
   if (!audio.paused && !audio.ended) {
     requestAnimationFrame(checkLyrics);
   }
-}
-    
-    
+}    
 
     startBtn.addEventListener("click", () => {
       audio.play();
