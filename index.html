@@ -115,7 +115,7 @@
     }
 
 function checkLyrics() {
-  const currentTime = audio.currentTime + 0.4; // majuin 0.4 detik
+  const currentTime = audio.currentTime + 0.2; // majuin 0.4 detik
   for (let i = lyrics.length - 1; i >= 0; i--) {
     if (currentTime >= lyrics[i].time) {
       if (currentIndex !== i) {
