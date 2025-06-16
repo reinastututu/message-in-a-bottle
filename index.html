@@ -119,7 +119,7 @@ let lastShownTime = 0;
 function checkLyrics() {
   const currentTime = audio.currentTime;
 
-  if (currentIndex + 1 < lyrics.length && currentTime >= lyrics[currentIndex + 1].time - 2) {
+  if (currentIndex + 1 < lyrics.length && currentTime >= lyrics[currentIndex + 1].time - 1) {
     currentIndex++;
     showLyric(lyrics[currentIndex], currentIndex);
   }
