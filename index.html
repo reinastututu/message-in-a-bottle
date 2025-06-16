@@ -2,91 +2,108 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Message in a Bottle - Real-time Sync</title>
+  <title>Message in a Bottle</title>
   <style>
     body {
-      background: linear-gradient(to top right, #4e54c8, #8f94fb);
-      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to top right, #1c1c3c, #3a3aad);
       color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
+      height: 100vh;
+      overflow: hidden;
       text-align: center;
     }
 
-    #lyrics {
-      margin-top: 30px;
-      font-size: 1.5rem;
-      white-space: pre-wrap;
-      line-height: 2;
-      max-width: 90%;
-      transition: opacity 0.3s ease;
+    #lyrics-box {
+      font-size: 2.2rem;
+      line-height: 1.4;
+      opacity: 0;
+      transition: opacity 1s ease;
+      padding: 0 20px;
+    }
+
+    #translation {
+      font-size: 1.4rem;
+      color: #ccc;
+      margin-top: 10px;
     }
 
     #startBtn {
-      padding: 12px 24px;
       font-size: 1.2rem;
+      padding: 12px 24px;
       border: none;
-      background: white;
-      color: #4e54c8;
-      border-radius: 8px;
+      border-radius: 10px;
+      background-color: white;
+      color: #333;
       cursor: pointer;
-    }
-
-    #startBtn:active {
-      transform: scale(0.97);
+      position: absolute;
+      top: 30px;
     }
   </style>
 </head>
 <body>
-  <h2>🎶 Message in a Bottle — Reff</h2>
-  <button id="startBtn">▶ Start</button>
-  <div id="lyrics"></div>
+  <button id="startBtn">▶ Mulai</button>
+  <div id="lyrics-box">
+    <div id="lyric"></div>
+    <div id="translation"></div>
+  </div>
   <audio id="audio" src="reff.mp3"></audio>
 
   <script>
-    const lyricsData = [
-      { time: 2.8, text: "I'm reachin' for you, terrified" },
-      { time: 7.0, text: "'Cause you could be the one that I love" },
-      { time: 11.0, text: "I could be the one that you dream of" },
-      { time: 14.6, text: "Message in a bottle is all I can do" },
-      { time: 18.2, text: "Standin' here, hopin' it gets to you (it gets to you)" },
-      { time: 22.9, text: "You could be the one that I keep, and I (I)" },
-      { time: 26.1, text: "Could be the reason you can't sleep at night" },
-      { time: 29.7, text: "Message in a bottle is all I can do" },
-      { time: 33.4, text: "Standin' here, hopin' it gets to you" },
+    const lyrics = [
+      { time: 2.8, en: "I'm reachin' for you, terrified", id: "Gue nyoba deketin lo, sambil deg-degan" },
+      { time: 7.0, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
+      { time: 11.0, en: "I could be the one that you dream of", id: "Mungkin juga gue yang selalu lo impiin" },
+      { time: 14.6, en: "Message in a bottle is all I can do", id: "Satu-satunya cara cuma ngirim pesan botol ke lo" },
+      { time: 18.2, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue cuma bisa berharap semoga lo nemu (nemu juga)" },
+      { time: 22.9, en: "You could be the one that I keep, and I (I)", id: "Lo mungkin orang yang bakal gue pertahanin" },
+      { time: 26.1, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
+      { time: 29.7, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirimin pesan dalam botol lagi" },
+      { time: 33.4, en: "Standin' here, hopin' it gets to you", id: "Gue berdiri di sini, ngarep lo nemu pesannya" }
     ];
 
-    const audio = document.getElementById('audio');
-    const startBtn = document.getElementById('startBtn');
-    const lyricsBox = document.getElementById('lyrics');
+    const audio = document.getElementById("audio");
+    const startBtn = document.getElementById("startBtn");
+    const lyricBox = document.getElementById("lyrics-box");
+    const lyricText = document.getElementById("lyric");
+    const translationText = document.getElementById("translation");
+
     let currentIndex = -1;
 
-    function updateLyrics() {
+    function showLyric(line) {
+      lyricText.textContent = line.en;
+      translationText.textContent = line.id;
+      lyricBox.style.opacity = 0;
+      setTimeout(() => {
+        lyricBox.style.opacity = 1;
+      }, 200);
+    }
+
+    function checkLyrics() {
       const currentTime = audio.currentTime;
-      for (let i = lyricsData.length - 1; i >= 0; i--) {
-        if (currentTime >= lyricsData[i].time) {
+      for (let i = lyrics.length - 1; i >= 0; i--) {
+        if (currentTime >= lyrics[i].time) {
           if (currentIndex !== i) {
-            lyricsBox.textContent = lyricsData[i].text;
             currentIndex = i;
+            showLyric(lyrics[i]);
           }
           break;
         }
       }
       if (!audio.paused && !audio.ended) {
-        requestAnimationFrame(updateLyrics);
+        requestAnimationFrame(checkLyrics);
       }
     }
 
-    startBtn.addEventListener('click', () => {
-      audio.play().then(() => {
-        startBtn.style.display = 'none';
-        requestAnimationFrame(updateLyrics);
-      });
+    startBtn.addEventListener("click", () => {
+      audio.play();
+      startBtn.style.display = "none";
+      requestAnimationFrame(checkLyrics);
     });
   </script>
 </body>
