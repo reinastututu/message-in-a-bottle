@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Message in a Bottle - Synced</title>
+  <title>Message in a Bottle - Real-time Sync</title>
   <style>
     body {
       background: linear-gradient(to top right, #4e54c8, #8f94fb);
@@ -50,33 +50,42 @@
 
   <script>
     const lyricsData = [
-  { time: 2.1, text: "I'm reachin' for you, terrified" },
-  { time: 6.3, text: "'Cause you could be the one that I love" },
-  { time: 10.2, text: "I could be the one that you dream of" },
-  { time: 13.9, text: "Message in a bottle is all I can do" },
-  { time: 17.5, text: "Standin' here, hopin' it gets to you (it gets to you)" },
-  { time: 22.2, text: "You could be the one that I keep, and I (I)" },
-  { time: 25.4, text: "Could be the reason you can't sleep at night" },
-  { time: 29.0, text: "Message in a bottle is all I can do" },
-  { time: 32.7, text: "Standin' here, hopin' it gets to you" },
-];
-    
+      { time: 2.8, text: "I'm reachin' for you, terrified" },
+      { time: 7.0, text: "'Cause you could be the one that I love" },
+      { time: 11.0, text: "I could be the one that you dream of" },
+      { time: 14.6, text: "Message in a bottle is all I can do" },
+      { time: 18.2, text: "Standin' here, hopin' it gets to you (it gets to you)" },
+      { time: 22.9, text: "You could be the one that I keep, and I (I)" },
+      { time: 26.1, text: "Could be the reason you can't sleep at night" },
+      { time: 29.7, text: "Message in a bottle is all I can do" },
+      { time: 33.4, text: "Standin' here, hopin' it gets to you" },
+    ];
 
-    const lyricsBox = document.getElementById('lyrics');
     const audio = document.getElementById('audio');
     const startBtn = document.getElementById('startBtn');
+    const lyricsBox = document.getElementById('lyrics');
+    let currentIndex = -1;
+
+    function updateLyrics() {
+      const currentTime = audio.currentTime;
+      for (let i = lyricsData.length - 1; i >= 0; i--) {
+        if (currentTime >= lyricsData[i].time) {
+          if (currentIndex !== i) {
+            lyricsBox.textContent = lyricsData[i].text;
+            currentIndex = i;
+          }
+          break;
+        }
+      }
+      if (!audio.paused && !audio.ended) {
+        requestAnimationFrame(updateLyrics);
+      }
+    }
 
     startBtn.addEventListener('click', () => {
       audio.play().then(() => {
         startBtn.style.display = 'none';
-
-        lyricsData.forEach(({ time, text }) => {
-          setTimeout(() => {
-            lyricsBox.textContent = text;
-          }, time * 1000);
-        });
-      }).catch((err) => {
-        alert("Gagal memutar lagu: " + err.message);
+        requestAnimationFrame(updateLyrics);
       });
     });
   </script>
