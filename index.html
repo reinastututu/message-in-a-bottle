@@ -1,136 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Message in a Bottle</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #2b1055, #7597de);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-      text-align: center;
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><title>Message in a Bottle</title>
+<style>
+body{margin:0;display:flex; flex-direction:column;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#2b1055,#7597de);color:#fff;font-family:'Segoe UI',sans-serif;text-align:center;}
+#lyrics-box{font-size:2.2rem;line-height:1.4;opacity:0;transition:opacity .6s ease;padding:0 20px;max-width:90%;}
+#translation{font-size:1.2rem;color:#ddd;margin-top:10px;}
+#startBtn{font-size:1.1rem;padding:12px 24px;border:none;border-radius:8px;background:#fff;color:#333;cursor:pointer;position:relative;z-index:10;}
+.letter{display:inline-block;opacity:0;transform:translateY(4px);animation:fadeInUp .3s forwards;}
+@keyframes fadeInUp{to{opacity:1;transform:translateY(0);}}
+</style></head><body>
+<button id="startBtn">▶ Play</button>
+<div id="lyrics-box"><div id="lyric"></div><div id="translation"></div></div>
+<audio id="audio" src="reff.mp3"></audio>
+<script>
+const lyrics = [
+  {time:3.3,en:"I'm reachin' for you, terrified",id:"Gue nyoba deketin lo, sambil deg‑degan"},
+  {time:6.5,en:"'Cause you could be the one that I love",id:"Karena mungkin lo yang gue sayang"},
+  {time:9.2,en:"I could be the one that you dream of",id:"Mungkin juga yang lo impiin"},
+  {time:12.6,en:"Message in a bottle is all I can do",id:"Cuma bisa ngirim pesan botol ke lo"},
+  {time:16.0,en:"Standin' here, hopin' it gets to you (it gets to you)",id:"Gue berdiri berharap lo nemu (nemu juga)"},
+  {time:20.5,en:"You could be the one that I keep, and I (I)",id:"Lo mungkin yang gue pertahanin"},
+  {time:23.7,en:"Could be the reason you can't sleep at night",id:"Bisa jadi alasannya lo susah tidur"},
+  {time:27.0,en:"Message in a bottle is all I can do",id:"Aku ngulangin ngirim pesan botol lagi"},
+  {time:30.0,en:"Standin' here, hopin' it gets to you",id:"Gue berdiri nunggu lo nemu pesannya"}
+];
+
+const audio = document.getElementById("audio");
+const btn = document.getElementById("startBtn");
+const box = document.getElementById("lyrics-box");
+const lt = document.getElementById("lyric");
+const tr = document.getElementById("translation");
+let idx = -1;
+
+function showLyric(l){
+  lt.innerHTML=""; tr.textContent=l.id; box.style.opacity=0;
+  l.en.split('').forEach((ch,i)=>{
+    const sp=document.createElement('span');
+    sp.textContent=ch; sp.className='letter';
+    sp.style.animationDelay=(i*0.01)+'s';
+    lt.appendChild(sp);
+  });
+  setTimeout(()=> box.style.opacity=1, 50);
+}
+
+function tick(){
+  const t=audio.currentTime;
+  for(let i=lyrics.length-1;i>=0;i--){
+    if(t>=lyrics[i].time){
+      if(idx!==i){idx=i;showLyric(lyrics[i]);}
+      break;
     }
+  }
+  if(!audio.paused&&!audio.ended)requestAnimationFrame(tick);
+}
 
-    #lyrics-box {
-      font-size: 2.3rem;
-      line-height: 1.5;
-      opacity: 0;
-      transition: opacity 0.8s ease;
-      padding: 0 20px;
-      max-width: 90%;
-    }
-
-    #translation {
-      font-size: 1.2rem;
-      color: #ddd;
-      margin-top: 10px;
-    }
-
-    #startBtn {
-      font-size: 1rem;
-      padding: 10px 22px;
-      border: none;
-      border-radius: 8px;
-      background-color: white;
-      color: #333;
-      cursor: pointer;
-      position: absolute;
-      top: 20px;
-    }
-
-    .letter {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(10px);
-      animation: fadeInUp 0.4s forwards;
-    }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
-</head>
-<body>
-  <button id="startBtn">▶ Play</button>
-  <div id="lyrics-box">
-    <div id="lyric"></div>
-    <div id="translation"></div>
-  </div>
-  <audio id="audio" src="reff.mp3"></audio>
-
-  <script>
-    const lyrics = [
-      { time: 3.5, en: "I'm reachin' for you, terrified", id: "Gue nyoba deketin lo, sambil deg‑degan" },
-      { time: 7.8, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
-      { time: 10.7, en: "I could be the one that you dream of", id: "Mungkin juga gue yang selalu lo impiin" },
-      { time: 14.2, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirim pesan botol ke lo" },
-      { time: 17.8, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue berharap semoga lo nemu (nemu juga)" },
-      { time: 22.4, en: "You could be the one that I keep, and I (I)", id: "Lo mungkin orang yang gue pertahanin" },
-      { time: 25.6, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
-      { time: 29.0, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirimin pesan botol lagi" },
-      { time: 32.5, en: "Standin' here, hopin' it gets to you", id: "Gue berdiri nunggu lo nemu pesannya" }
-    ];
-
-    const audio = document.getElementById("audio");
-    const startBtn = document.getElementById("startBtn");
-    const lyricBox = document.getElementById("lyrics-box");
-    const lyricText = document.getElementById("lyric");
-    const translationText = document.getElementById("translation");
-
-    let currentIndex = -1;
-
-    function showLyric(line) {
-      lyricText.innerHTML = '';
-      translationText.textContent = line.id;
-      lyricBox.style.opacity = 0;
-
-      const letters = line.en.split('');
-      letters.forEach((char, i) => {
-        const span = document.createElement('span');
-        span.textContent = char;
-        span.className = 'letter';
-        span.style.animationDelay = `${i * 0.025}s`;
-        lyricText.appendChild(span);
-      });
-
-      setTimeout(() => {
-        lyricBox.style.opacity = 1;
-      }, 100);
-    }
-
-    function checkLyrics() {
-      const currentTime = audio.currentTime;
-      for (let i = lyrics.length - 1; i >= 0; i--) {
-        if (currentTime >= lyrics[i].time) {
-          if (currentIndex !== i) {
-            currentIndex = i;
-            showLyric(lyrics[i]);
-          }
-          break;
-        }
-      }
-      if (!audio.paused && !audio.ended) {
-        requestAnimationFrame(checkLyrics);
-      }
-    }
-
-    startBtn.addEventListener("click", () => {
-      audio.play();
-      startBtn.style.display = "none";
-      requestAnimationFrame(checkLyrics);
-    });
-  </script>
-</body>
-</html>
-
+btn.addEventListener("click",()=>{
+  audio.play(); btn.style.display="none";
+  requestAnimationFrame(tick);
+});
+</script></body></html>
