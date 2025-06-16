@@ -114,21 +114,23 @@
       }, 100);
     }
 
-    function checkLyrics() {
-      const currentTime = audio.currentTime;
-      for (let i = lyrics.length - 1; i >= 0; i--) {
-        if (currentTime >= lyrics[i].time) {
-          if (currentIndex !== i) {
-            currentIndex = i;
-            showLyric(lyrics[i], i);
-          }
-          break;
-        }
+function checkLyrics() {
+  const currentTime = audio.currentTime + 0.4; // majuin 0.4 detik
+  for (let i = lyrics.length - 1; i >= 0; i--) {
+    if (currentTime >= lyrics[i].time) {
+      if (currentIndex !== i) {
+        currentIndex = i;
+        showLyric(lyrics[i], i);
       }
-      if (!audio.paused && !audio.ended) {
-        requestAnimationFrame(checkLyrics);
-      }
+      break;
     }
+  }
+  if (!audio.paused && !audio.ended) {
+    requestAnimationFrame(checkLyrics);
+  }
+}
+    
+    
 
     startBtn.addEventListener("click", () => {
       audio.play();
