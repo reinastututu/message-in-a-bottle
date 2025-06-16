@@ -8,7 +8,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to top right, #1c1c3c, #3a3aad);
+      background: linear-gradient(135deg, #1b1b3a, #3a3aad);
       color: white;
       display: flex;
       flex-direction: column;
@@ -20,12 +20,12 @@
     }
 
     #lyrics-box {
-      font-size: 2.2rem;
+      font-size: 2rem;
       line-height: 1.5;
       opacity: 0;
-      transition: opacity 0.6s ease, transform 0.6s ease;
-      padding: 0 20px;
+      transition: opacity 0.5s ease, transform 0.5s ease;
       transform: translateY(20px);
+      padding: 0 20px;
     }
 
     #lyrics-box.show {
@@ -34,22 +34,21 @@
     }
 
     #translation {
-      font-size: 1.4rem;
-      color: #ccc;
+      font-size: 1.2rem;
+      color: #dcdcdc;
       margin-top: 10px;
     }
 
     #startBtn {
-      font-size: 1.2rem;
-      padding: 12px 24px;
+      font-size: 1rem;
+      padding: 10px 20px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       background-color: white;
       color: #333;
       cursor: pointer;
       position: absolute;
       top: 30px;
-      z-index: 10;
     }
   </style>
 </head>
@@ -63,15 +62,15 @@
 
   <script>
     const lyrics = [
-      { time: 0.0, en: "I'm reachin' for you, terrified", id: "Gue nyoba deketin lo, sambil deg-degan" },
-      { time: 4.1, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
-      { time: 7.2, en: "I could be the one that you dream of", id: "Mungkin juga gue yang selalu lo impiin" },
-      { time: 10.6, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirim pesan botol ke lo" },
-      { time: 14.1, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue berharap semoga lo nemu (nemu juga)" },
-      { time: 19.0, en: "You could be the one that I keep, and I (I)", id: "Lo mungkin orang yang gue pertahanin" },
-      { time: 22.5, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
-      { time: 26.0, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirimin pesan botol lagi" },
-      { time: 29.6, en: "Standin' here, hopin' it gets to you", id: "Gue berdiri nunggu lo nemu pesannya" }
+      { time: 0.2, en: "I'm reachin' for you, terrified", id: "Gue nyoba deketin lo, sambil deg-degan" },
+      { time: 4.3, en: "'Cause you could be the one that I love", id: "Soalnya lo bisa aja orang yang gue sayang" },
+      { time: 7.1, en: "I could be the one that you dream of", id: "Mungkin gue orang yang lo impiin" },
+      { time: 10.5, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirim pesan lewat botol" },
+      { time: 14.0, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue berdiri di sini, berharap lo nemu (nemu juga)" },
+      { time: 18.8, en: "You could be the one that I keep, and I (I)", id: "Lo mungkin orang yang bakal gue pertahanin" },
+      { time: 22.1, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
+      { time: 25.4, en: "Message in a bottle is all I can do", id: "Cuma bisa kirim pesan dalam botol lagi" },
+      { time: 29.0, en: "Standin' here, hopin' it gets to you", id: "Gue masih nungguin, semoga sampe ke lo" }
     ];
 
     const audio = document.getElementById("audio");
@@ -86,8 +85,9 @@
       lyricText.textContent = line.en;
       translationText.textContent = line.id;
       lyricBox.classList.remove("show");
-      void lyricBox.offsetWidth; // force reflow
-      lyricBox.classList.add("show");
+      setTimeout(() => {
+        lyricBox.classList.add("show");
+      }, 50);
     }
 
     function checkLyrics() {
@@ -109,8 +109,6 @@
     startBtn.addEventListener("click", () => {
       audio.play();
       startBtn.style.display = "none";
-      currentIndex = -1;
-      showLyric(lyrics[0]); // tampilkan langsung pertama
       requestAnimationFrame(checkLyrics);
     });
   </script>
