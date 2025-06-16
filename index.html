@@ -8,7 +8,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to top right, #1c1c3c, #3a3aad);
+      background: linear-gradient(135deg, #2b1055, #7597de);
       color: white;
       display: flex;
       flex-direction: column;
@@ -20,39 +20,40 @@
     }
 
     #lyrics-box {
-      font-size: 2.2rem;
-      line-height: 1.4;
+      font-size: 2.3rem;
+      line-height: 1.5;
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: opacity 0.8s ease;
       padding: 0 20px;
+      max-width: 90%;
     }
 
     #translation {
-      font-size: 1.4rem;
-      color: #ccc;
+      font-size: 1.2rem;
+      color: #ddd;
       margin-top: 10px;
     }
 
     #startBtn {
-      font-size: 1.2rem;
-      padding: 12px 24px;
+      font-size: 1rem;
+      padding: 10px 22px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       background-color: white;
       color: #333;
       cursor: pointer;
       position: absolute;
-      top: 30px;
+      top: 20px;
     }
 
     .letter {
       display: inline-block;
       opacity: 0;
       transform: translateY(10px);
-      animation: fadeUp 0.4s forwards;
+      animation: fadeInUp 0.4s forwards;
     }
 
-    @keyframes fadeUp {
+    @keyframes fadeInUp {
       to {
         opacity: 1;
         transform: translateY(0);
@@ -61,7 +62,7 @@
   </style>
 </head>
 <body>
-  <button id="startBtn">▶ Mulai</button>
+  <button id="startBtn">▶ Play</button>
   <div id="lyrics-box">
     <div id="lyric"></div>
     <div id="translation"></div>
@@ -70,15 +71,15 @@
 
   <script>
     const lyrics = [
-      { time: 3.8, en: "I'm reachin' for you, terrified", id: "Gue nyoba deketin lo, sambil deg‑degan" },
-      { time: 8.2, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
-      { time: 11.0, en: "I could be the one that you dream of", id: "Mungkin juga gue yang selalu lo impiin" },
-      { time: 14.6, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirim pesan botol ke lo" },
-      { time: 18.2, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue berharap semoga lo nemu (nemu juga)" },
-      { time: 22.9, en: "You could be the one that I keep, and I (I)", id: "Lo mungkin orang yang gue pertahanin" },
-      { time: 26.1, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
-      { time: 29.7, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirimin pesan botol lagi" },
-      { time: 33.4, en: "Standin' here, hopin' it gets to you", id: "Gue berdiri nunggu lo nemu pesannya" }
+      { time: 3.5, en: "I'm reachin' for you, terrified", id: "Gue nyoba deketin lo, sambil deg‑degan" },
+      { time: 7.8, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
+      { time: 10.7, en: "I could be the one that you dream of", id: "Mungkin juga gue yang selalu lo impiin" },
+      { time: 14.2, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirim pesan botol ke lo" },
+      { time: 17.8, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue berharap semoga lo nemu (nemu juga)" },
+      { time: 22.4, en: "You could be the one that I keep, and I (I)", id: "Lo mungkin orang yang gue pertahanin" },
+      { time: 25.6, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
+      { time: 29.0, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirimin pesan botol lagi" },
+      { time: 32.5, en: "Standin' here, hopin' it gets to you", id: "Gue berdiri nunggu lo nemu pesannya" }
     ];
 
     const audio = document.getElementById("audio");
@@ -99,13 +100,13 @@
         const span = document.createElement('span');
         span.textContent = char;
         span.className = 'letter';
-        span.style.animationDelay = `${i * 0.03}s`;
+        span.style.animationDelay = `${i * 0.025}s`;
         lyricText.appendChild(span);
       });
 
       setTimeout(() => {
         lyricBox.style.opacity = 1;
-      }, 200);
+      }, 100);
     }
 
     function checkLyrics() {
@@ -132,3 +133,4 @@
   </script>
 </body>
 </html>
+
