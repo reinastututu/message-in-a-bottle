@@ -2,102 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Message in a Bottle - Taylor Swift</title>
+  <title>Message in a Bottle - Synced</title>
   <style>
     body {
-      background: linear-gradient(to top right, #a18cd1, #fbc2eb);
+      background: linear-gradient(to top right, #4e54c8, #8f94fb);
       font-family: 'Courier New', monospace;
       color: white;
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
-      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
       padding: 20px;
-      overflow-y: auto;
       text-align: center;
     }
 
     #lyrics {
-      font-size: 1.3rem;
-      margin-top: 20px;
+      margin-top: 30px;
+      font-size: 1.5rem;
       white-space: pre-wrap;
       line-height: 2;
-      letter-spacing: 0.05em;
-      max-width: 90vw;
+      max-width: 90%;
+      transition: opacity 0.3s ease;
     }
 
     #startBtn {
-      background: white;
-      color: #a18cd1;
       padding: 12px 24px;
-      font-weight: bold;
-      border-radius: 8px;
-      border: none;
       font-size: 1.2rem;
+      border: none;
+      background: white;
+      color: #4e54c8;
+      border-radius: 8px;
       cursor: pointer;
     }
 
     #startBtn:active {
       transform: scale(0.97);
     }
-
-    audio {
-      display: none;
-    }
-
-    .char {
-      opacity: 0;
-      transition: opacity 0.3s ease-in;
-    }
-
-    .char.visible {
-      opacity: 1;
-    }
   </style>
 </head>
 <body>
+  <h2>🎶 Message in a Bottle — Reff</h2>
   <button id="startBtn">▶ Start</button>
   <div id="lyrics"></div>
   <audio id="audio" src="reff.mp3"></audio>
 
   <script>
-    const lyricsText = `I'm reachin' for you, terrified
-'Cause you could be the one that I love
-I could be the one that you dream of
-Message in a bottle is all I can do
-Standin' here, hopin' it gets to you (it gets to you)
-You could be the one that I keep, and I (I)
-Could be the reason you can't sleep at night
-Message in a bottle is all I can do
-Standin' here, hopin' it gets to you`;
+    const lyricsData = [
+      { time: 0.0, text: "I'm reachin' for you, terrified" },
+      { time: 4.3, text: "'Cause you could be the one that I love" },
+      { time: 8.2, text: "I could be the one that you dream of" },
+      { time: 11.9, text: "Message in a bottle is all I can do" },
+      { time: 15.5, text: "Standin' here, hopin' it gets to you (it gets to you)" },
+      { time: 20.0, text: "You could be the one that I keep, and I (I)" },
+      { time: 23.6, text: "Could be the reason you can't sleep at night" },
+      { time: 27.0, text: "Message in a bottle is all I can do" },
+      { time: 30.6, text: "Standin' here, hopin' it gets to you" },
+    ];
 
-    const lyricsContainer = document.getElementById('lyrics');
-    const startBtn = document.getElementById('startBtn');
+    const lyricsBox = document.getElementById('lyrics');
     const audio = document.getElementById('audio');
-
-    function animateLyrics() {
-      lyricsContainer.innerHTML = '';
-      let delay = 0;
-
-      [...lyricsText].forEach((char) => {
-        const span = document.createElement('span');
-        span.textContent = char;
-        span.className = 'char';
-        lyricsContainer.appendChild(span);
-
-        setTimeout(() => {
-          span.classList.add('visible');
-        }, delay);
-
-        delay += (char === ' ' || char === '\\n') ? 50 : 75;
-      });
-    }
+    const startBtn = document.getElementById('startBtn');
 
     startBtn.addEventListener('click', () => {
-      audio.play();
-      startBtn.style.display = 'none';
-      animateLyrics();
+      audio.play().then(() => {
+        startBtn.style.display = 'none';
+
+        lyricsData.forEach(({ time, text }) => {
+          setTimeout(() => {
+            lyricsBox.textContent = text;
+          }, time * 1000);
+        });
+      }).catch((err) => {
+        alert("Gagal memutar lagu: " + err.message);
+      });
     });
   </script>
 </body>
