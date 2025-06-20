@@ -4,96 +4,53 @@
   <meta charset="UTF-8" />
   <title>Message in a Bottle</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
-
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Quicksand', sans-serif;
-      background: linear-gradient(to bottom right, #ffdde1, #ee9ca7);
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://i.imgur.com/uv1WGM5.png') center/cover no-repeat fixed;
+      color: white;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
       overflow: hidden;
-      position: relative;
-    }
-
-    #startBtn {
-      font-size: 1.5rem;
-      padding: 16px 32px;
-      border: none;
-      border-radius: 30px;
-      background-color: #fff;
-      color: #ff5c8a;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      position: absolute;
-      z-index: 10;
-      transition: transform 0.2s;
-    }
-
-    #startBtn:hover {
-      transform: scale(1.05);
+      text-align: center;
     }
 
     #lyrics-box {
-      text-align: center;
-      color: white;
+      font-size: 2.2rem;
+      line-height: 1.4;
       opacity: 0;
-      transition: opacity 0.6s ease;
-      font-size: 2rem;
+      transition: opacity 0.5s ease;
       padding: 0 20px;
     }
 
     #translation {
-      font-size: 1.3rem;
-      color: #ffeef2;
+      font-size: 1.4rem;
+      color: #ffd6f9;
       margin-top: 10px;
     }
 
-    .heart {
+    #startBtn {
+      font-size: 1.5rem;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 50px;
+      background-color: #fff;
+      color: #ff69b4;
+      cursor: pointer;
       position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #ff5c8a;
-      transform: rotate(45deg);
-      animation: float 6s infinite ease-in-out;
-    }
-
-    .heart::before, .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #ff5c8a;
-      border-radius: 50%;
-    }
-
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0) rotate(45deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-200px) rotate(45deg);
-        opacity: 0;
-      }
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px rgba(255, 105, 180, 0.6);
     }
   </style>
 </head>
 <body>
-  <button id="startBtn">💗 Play</button>
+  <button id="startBtn">▶ Play</button>
   <div id="lyrics-box">
     <div id="lyric"></div>
     <div id="translation"></div>
@@ -102,19 +59,18 @@
 
   <script>
     const lyrics = [
-      { time: 0, en: "I'm reachin' for you, terrified", id: "Gue nyoba pdkt ke lu, deg-degan" },
-      { time: 3.4, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
-      { time: 6.8, en: "I could be the one that you dream of", id: "Mungkin juga gue yang selalu lo impiin" },
-      { time: 10.2, en: "Message in a bottle is all I can do", id: "Cuma bisa ngode ngode" },
-      { time: 13.8, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue berharap semoga lo nyadar)" },
-      { time: 17.4, en: "You could be the one that I keep, and I (I)", id: "Lo mungkin orang yang gue pertahanin" },
-      { time: 20.6, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
-      { time: 24.0, en: "Message in a bottle is all I can do", id: "Cuma bisa ngode lagi" }
-      // Lirik terakhir ditahan
+      { time: 0.0, duration: 3.5, en: "I'm reachin' for you, terrified", id: "Gue nyoba deketin lo, sambil deg‑degan" },
+      { time: 3.5, duration: 3.0, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
+      { time: 6.6, duration: 3.5, en: "I could be the one that you dream of", id: "Mungkin juga gue yang selalu lo impiin" },
+      { time: 10.3, duration: 3.5, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirim pesan botol ke lo" },
+      { time: 13.8, duration: 4.0, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue berharap semoga lo nemu (nemu juga)" },
+      { time: 18.2, duration: 3.0, en: "You could be the one that I keep, and I (I)", id: "Lo mungkin orang yang gue pertahanin" },
+      { time: 21.4, duration: 3.5, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
+      { time: 24.9, duration: 4.0, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirimin pesan botol lagi" },
+      { time: 29.0, duration: 5.0, en: "Standin' here, hopin' it gets to you", id: "Gue berdiri nunggu lo nemu pesannya" }
     ];
 
-    const colors = ['#ffffff', '#ffeef2', '#fbe0dc', '#ffd1e3', '#ffe0e0'];
-
+    const colors = ["#ffffff", "#ffd6f9", "#ffb3d1", "#ffe4e1", "#f5c8ff", "#e0b3ff", "#d0e6ff", "#a0f1ff", "#fef0c3"];
     const audio = document.getElementById("audio");
     const startBtn = document.getElementById("startBtn");
     const lyricBox = document.getElementById("lyrics-box");
@@ -122,15 +78,18 @@
     const translationText = document.getElementById("translation");
 
     let currentIndex = -1;
+    let hideTimeout;
 
     function showLyric(line, index) {
       lyricText.textContent = line.en;
       translationText.textContent = line.id;
+      lyricBox.style.opacity = 1;
       lyricText.style.color = colors[index % colors.length];
-      lyricBox.style.opacity = 0;
-      setTimeout(() => {
-        lyricBox.style.opacity = 1;
-      }, 100);
+
+      clearTimeout(hideTimeout);
+      hideTimeout = setTimeout(() => {
+        lyricBox.style.opacity = 0;
+      }, line.duration * 1000);
     }
 
     function checkLyrics() {
@@ -149,21 +108,10 @@
       }
     }
 
-    function spawnHearts() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.top = "100vh";
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 6000);
-    }
-
     startBtn.addEventListener("click", () => {
       audio.play();
       startBtn.style.display = "none";
-      showLyric(lyrics[0], 0); // tampilkan langsung
       requestAnimationFrame(checkLyrics);
-      setInterval(spawnHearts, 800);
     });
   </script>
 </body>
