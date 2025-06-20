@@ -4,77 +4,96 @@
   <meta charset="UTF-8" />
   <title>Message in a Bottle</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
 
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(-45deg, #1c1c3c, #3a3aad, #1c1c3c, #3a3aad);
-      background-size: 400% 400%;
-      animation: gradientBG 10s ease infinite;
-      color: white;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to bottom right, #ffdde1, #ee9ca7);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
       overflow: hidden;
-      text-align: center;
-    }
-
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    #lyrics-box {
-      font-size: 2.2rem;
-      line-height: 1.4;
-      opacity: 0;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      transform: translateY(10px);
-      padding: 0 20px;
-      max-width: 90%;
-    }
-
-    #lyrics-box.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    #translation {
-      font-size: 1.4rem;
-      color: #ccc;
-      margin-top: 10px;
+      position: relative;
     }
 
     #startBtn {
-      font-size: 1.3rem;
-      padding: 14px 30px;
+      font-size: 1.5rem;
+      padding: 16px 32px;
       border: none;
-      border-radius: 12px;
-      background-color: white;
-      color: #333;
+      border-radius: 30px;
+      background-color: #fff;
+      color: #ff5c8a;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      z-index: 10;
+      transition: transform 0.2s;
     }
 
     #startBtn:hover {
-      background-color: #eee;
+      transform: scale(1.05);
+    }
+
+    #lyrics-box {
+      text-align: center;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      font-size: 2rem;
+      padding: 0 20px;
+    }
+
+    #translation {
+      font-size: 1.3rem;
+      color: #ffeef2;
+      margin-top: 10px;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff5c8a;
+      transform: rotate(45deg);
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .heart::before, .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff5c8a;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-200px) rotate(45deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <button id="startBtn">▶ Mulai</button>
+  <button id="startBtn">💗 Play</button>
   <div id="lyrics-box">
     <div id="lyric"></div>
     <div id="translation"></div>
@@ -83,17 +102,18 @@
 
   <script>
     const lyrics = [
-  { time: 3.0, en: "I'm reachin' for you, terrified", id: "Gue nyoba deketin lo, deg‑degan" },
-  { time: 4.5, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
-  { time: 11.5, en: "I could be the one that you dream of", id: "Mungkin juga gue yang selalu lo impiin" },
-  { time: 15.2, en: "Message in a bottle is all I can do", id: "Cuma bisa ngode ngodd" },
-  { time: 18.8, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue berharap semoga lo peka" },
-  { time: 23.4, en: "You could be the one that I keep, and I (I)", id: "Lo mungkin orang yang gue pertahanin" },
-  { time: 26.6, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
-  { time: 30.2, en: "Message in a bottle is all I can do", id: "Cuma bisa ngode lu " },
-];
-   
-    const colors = ["#ffcccb", "#a2d2ff", "#d0f4de", "#fdffb6", "#cdb4db", "#ffc6ff", "#bde0fe", "#ffd6a5", "#a0c4ff"];
+      { time: 0, en: "I'm reachin' for you, terrified", id: "Gue nyoba pdkt ke lu, deg-degan" },
+      { time: 3.4, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
+      { time: 6.8, en: "I could be the one that you dream of", id: "Mungkin juga gue yang selalu lo impiin" },
+      { time: 10.2, en: "Message in a bottle is all I can do", id: "Cuma bisa ngode ngode" },
+      { time: 13.8, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue berharap semoga lo nyadar)" },
+      { time: 17.4, en: "You could be the one that I keep, and I (I)", id: "Lo mungkin orang yang gue pertahanin" },
+      { time: 20.6, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
+      { time: 24.0, en: "Message in a bottle is all I can do", id: "Cuma bisa ngode lagi" }
+      // Lirik terakhir ditahan
+    ];
+
+    const colors = ['#ffffff', '#ffeef2', '#fbe0dc', '#ffd1e3', '#ffe0e0'];
 
     const audio = document.getElementById("audio");
     const startBtn = document.getElementById("startBtn");
@@ -104,36 +124,46 @@
     let currentIndex = -1;
 
     function showLyric(line, index) {
-      lyricBox.classList.remove("show");
+      lyricText.textContent = line.en;
+      translationText.textContent = line.id;
+      lyricText.style.color = colors[index % colors.length];
+      lyricBox.style.opacity = 0;
       setTimeout(() => {
-        lyricText.textContent = line.en;
-        translationText.textContent = line.id;
-        lyricText.style.color = colors[index % colors.length];
-        lyricBox.classList.add("show");
+        lyricBox.style.opacity = 1;
       }, 100);
     }
 
-let lastShownTime = 0;
+    function checkLyrics() {
+      const currentTime = audio.currentTime;
+      for (let i = lyrics.length - 1; i >= 0; i--) {
+        if (currentTime >= lyrics[i].time) {
+          if (currentIndex !== i) {
+            currentIndex = i;
+            showLyric(lyrics[i], i);
+          }
+          break;
+        }
+      }
+      if (!audio.paused && !audio.ended) {
+        requestAnimationFrame(checkLyrics);
+      }
+    }
 
-function checkLyrics() {
-  const currentTime = audio.currentTime;
+    function spawnHearts() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.top = "100vh";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
 
-  if (currentIndex + 1 < lyrics.length && currentTime >= lyrics[currentIndex + 1].time - 1) {
-    currentIndex++;
-    showLyric(lyrics[currentIndex], currentIndex);
-  }
-
-  if (!audio.paused && !audio.ended) {
-    requestAnimationFrame(checkLyrics);
-  }
-}
-    
-    
     startBtn.addEventListener("click", () => {
       audio.play();
       startBtn.style.display = "none";
-      showLyric(lyrics[0], 0); // langsung muncul
+      showLyric(lyrics[0], 0); // tampilkan langsung
       requestAnimationFrame(checkLyrics);
+      setInterval(spawnHearts, 800);
     });
   </script>
 </body>
