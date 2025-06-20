@@ -4,13 +4,11 @@
   <meta charset="UTF-8" />
   <title>Message in a Bottle</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
-
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Quicksand', sans-serif;
-      background: url('https://i.ibb.co/N2L8Cbk/love-bg.png') center/cover no-repeat;
+      font-family: 'Segoe UI', sans-serif;
+      background: #90caf9;
       color: white;
       display: flex;
       flex-direction: column;
@@ -23,38 +21,30 @@
 
     #lyrics-box {
       font-size: 2.2rem;
-      line-height: 1.5;
+      line-height: 1.4;
       opacity: 0;
-      transition: opacity 0.6s ease;
-      padding: 0 24px;
-      max-width: 90vw;
+      transition: opacity 1s ease;
+      padding: 0 20px;
     }
 
     #translation {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
+      color: #ddd;
       margin-top: 10px;
-      color: #eee;
     }
 
     #startBtn {
-      font-size: 1.4rem;
-      padding: 14px 28px;
+      font-size: 1.2rem;
+      padding: 12px 24px;
       border: none;
-      border-radius: 50px;
+      border-radius: 10px;
       background-color: white;
-      color: #d63384;
+      color: #333;
       cursor: pointer;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
-    }
-
-    #startBtn:hover {
-      background-color: #ffe6f0;
-      color: #b30059;
     }
   </style>
 </head>
@@ -68,8 +58,8 @@
 
   <script>
     const lyrics = [
-      { time: 0.2, en: "I'm reachin' for you, terrified", id: "Gue nyoba deketin lo, sambil deg‑degan" },
-      { time: 7.2, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
+      { time: 3.5, en: "I'm reachin' for you, terrified", id: "Gue nyoba deketin lo, sambil deg‑degan" },
+      { time: 8.2, en: "'Cause you could be the one that I love", id: "Soalnya mungkin lo orang yang gue sayang" },
       { time: 11.0, en: "I could be the one that you dream of", id: "Mungkin juga gue yang selalu lo impiin" },
       { time: 14.6, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirim pesan botol ke lo" },
       { time: 18.2, en: "Standin' here, hopin' it gets to you (it gets to you)", id: "Gue berharap semoga lo nemu (nemu juga)" },
@@ -77,11 +67,6 @@
       { time: 26.1, en: "Could be the reason you can't sleep at night", id: "Bisa jadi alasan lo susah tidur tiap malam" },
       { time: 29.7, en: "Message in a bottle is all I can do", id: "Cuma bisa ngirimin pesan botol lagi" },
       { time: 33.4, en: "Standin' here, hopin' it gets to you", id: "Gue berdiri nunggu lo nemu pesannya" }
-    ];
-
-    const lyricColors = [
-      "#FFD6EC", "#FFFA9E", "#A3F7BF", "#B5EAEA", "#FBC4AB",
-      "#E0BBE4", "#FFADAD", "#D4A5A5", "#FFCACC"
     ];
 
     const audio = document.getElementById("audio");
@@ -93,18 +78,20 @@
     let currentIndex = -1;
 
     function showLyric(line) {
-      const color = lyricColors[currentIndex % lyricColors.length];
       lyricText.textContent = line.en;
       translationText.textContent = line.id;
-      lyricText.style.color = color;
       lyricBox.style.opacity = 0;
       setTimeout(() => {
         lyricBox.style.opacity = 1;
-      }, 100);
+      }, 200);
     }
 
     function checkLyrics() {
-      const currentTime = audio.currentTime;
+      const rawTime = audio.currentTime;
+      const currentTime = (currentIndex === -1 && rawTime < lyrics[0].time)
+        ? rawTime + 1.3 // cuma buat lirik pertama
+        : rawTime;
+
       for (let i = lyrics.length - 1; i >= 0; i--) {
         if (currentTime >= lyrics[i].time) {
           if (currentIndex !== i) {
@@ -122,8 +109,6 @@
     startBtn.addEventListener("click", () => {
       audio.play();
       startBtn.style.display = "none";
-      currentIndex = -1;
-      showLyric(lyrics[0]); // langsung tampil lirik pertama
       requestAnimationFrame(checkLyrics);
     });
   </script>
