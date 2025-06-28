@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>🌧️ Message in a Bottle</title>
+  <meta charset="UTF-8" />
+  <title>Message in a Bottle 💌</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
@@ -31,6 +30,7 @@
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       margin-bottom: 1rem;
+      z-index: 2;
     }
 
     #lyrics-box {
@@ -44,6 +44,7 @@
       font-size: 1.5rem;
       transition: opacity 0.8s ease;
       opacity: 0;
+      z-index: 2;
     }
 
     #lyric {
@@ -57,7 +58,7 @@
       color: #6a1b9a;
     }
 
-    /* Hujan love */
+    /* Hujan Love */
     .heart {
       position: absolute;
       top: -10px;
@@ -67,6 +68,7 @@
       transform: rotate(45deg);
       animation: fall 6s linear infinite;
       opacity: 0.7;
+      z-index: 1;
     }
 
     .heart::before,
@@ -99,35 +101,72 @@
         opacity: 0;
       }
     }
+
+    /* Frame Foto Jatuh */
+    .photo-frame {
+      position: absolute;
+      top: -100px;
+      width: 80px;
+      height: 80px;
+      border: 4px solid white;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      animation: dropPhoto 8s linear infinite;
+      z-index: 0;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+    }
+
+    @keyframes dropPhoto {
+      0% {
+        transform: translateY(-100px) translateX(0) rotate(0deg);
+        opacity: 1;
+      }
+      25% {
+        transform: translateY(25vh) translateX(-20px) rotate(-10deg);
+      }
+      50% {
+        transform: translateY(50vh) translateX(20px) rotate(10deg);
+      }
+      75% {
+        transform: translateY(75vh) translateX(-15px) rotate(-5deg);
+      }
+      100% {
+        transform: translateY(110vh) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
 
   <button id="startBtn">💖 Mulai Dengarkan</button>
-  <audio id="audio" src="reff.mp3" preload="auto" controls hidden></audio>
+  <audio id="audio" src="reff.mp3" preload="auto" hidden></audio>
 
   <div id="lyrics-box">
     <div id="lyric"></div>
     <div id="translation"></div>
   </div>
 
-  <!-- Hujan Love -->
   <script>
-    // Generate hearts
-    for (let i = 0; i < 30; i++) {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.style.left = `${Math.random() * 100}vw`;
-      heart.style.animationDelay = `${Math.random() * 6}s`;
-      heart.style.background = `hsl(${Math.random() * 360}, 70%, 80%)`;
-      document.body.appendChild(heart);
-    }
-
     const audio = document.getElementById("audio");
     const startBtn = document.getElementById("startBtn");
     const lyricBox = document.getElementById("lyrics-box");
     const lyricText = document.getElementById("lyric");
     const translationText = document.getElementById("translation");
+
+    const imageList = [
+      "https://placekitten.com/100/100",
+      "https://placebear.com/100/100",
+      "https://placebeard.it/100x100"
+    ];
 
     let lyrics = [];
     let currentIndex = -1;
@@ -178,13 +217,45 @@
       }
     }
 
+    function generateLoveRain() {
+      for (let i = 0; i < 30; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = `${Math.random() * 100}vw`;
+        heart.style.animationDelay = `${Math.random() * 6}s`;
+        heart.style.background = `hsl(${Math.random() * 360}, 70%, 80%)`;
+        document.body.appendChild(heart);
+      }
+    }
+
+    function generatePhotoRain(images) {
+      for (let i = 0; i < 12; i++) {
+        const photo = document.createElement('div');
+        photo.className = 'photo-frame';
+        photo.style.left = `${Math.random() * 100}vw`;
+        photo.style.animationDelay = `${Math.random() * 6}s`;
+
+        const img = document.createElement('img');
+        img.src = images[Math.floor(Math.random() * images.length)];
+
+        photo.appendChild(img);
+        document.body.appendChild(photo);
+      }
+    }
+
     startBtn.addEventListener("click", async () => {
       startBtn.style.display = "none";
+
       if (lyrics.length === 0) {
         lyrics = await loadLRC("message.lrc");
       }
-      audio.play();
-      requestAnimationFrame(checkLyrics);
+
+      generateLoveRain();
+      generatePhotoRain(imageList);
+
+      audio.play().then(() => {
+        requestAnimationFrame(checkLyrics);
+      });
     });
   </script>
 </body>
